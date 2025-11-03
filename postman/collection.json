@@ -1,0 +1,205 @@
+{
+  "info": {
+    "name": "Week7 Express CRUD JWT",
+    "_postman_id": "week7-express-crud-jwt-collection",
+    "description": "Collection to test the Week7 Express CRUD JWT API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Save bearer token to environment variable if present",
+              "if (pm.response.code === 200) {",
+              "  const json = pm.response.json();",
+              "  if (json.token) {",
+              "    pm.environment.set('bearerToken', json.token);",
+              "    pm.test('Saved bearerToken', function() { pm.expect(json.token).to.be.a('string'); });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "Cars - Get All (protected)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bearerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/cars",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cars"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cars - Get By ID (public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/cars/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cars",
+            ":id"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cars - Create (protected)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bearerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brand\": \"Toyota\",\n  \"model\": \"Avanza\",\n  \"year\": 2020,\n  \"price\": 150000000\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cars",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cars"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cars - Update (protected)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bearerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"brand\": \"Honda\",\n  \"model\": \"Civic\",\n  \"year\": 2021,\n  \"price\": 300000000\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/cars/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cars",
+            ":id"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cars - Delete (protected)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bearerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/cars/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cars",
+            ":id"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
