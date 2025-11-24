@@ -2,6 +2,29 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+//gunakan cors untuk mengizinkan request dari origin tertentu
+const cors = require('cors');
+
+// konfigurasi CORS dengan beberapa origin yang diizinkan tidak menggunakan env
+const allowedOrigins = [
+  'http://localhost:51733',      // Development Vue
+  'http://localhost:3000',     // Production dengan www
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Izinkan request tanpa origin (dari mobile app, Postman, dll)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // gunakan port dari file .env atau 5000
 const PORT = process.env.PORT || 5000;
 

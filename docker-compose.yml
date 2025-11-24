@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: carsdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    volumes:
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d:ro
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    restart: on-failure
+    env_file:
+      - .env.docker
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    volumes:
+      - .:/usr/src/app:cached
+
+volumes:
+  mysql-data:

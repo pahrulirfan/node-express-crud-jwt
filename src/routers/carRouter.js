@@ -12,7 +12,7 @@ const authenticateToken = require("../middleware/authMiddleware");
 router.get('/', authenticateToken, carController.getAllCars);
 
 // GET car by ID
-router.get('/:id', authenticateToken, carController.getCarById);
+router.get('/:id', carController.getCarById);
 
 // POST create new car
 
